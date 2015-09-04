@@ -1,0 +1,36 @@
+<div class="col-md-4 col-md-offset-4">
+  <div class="well" ng-show="vm.profile">
+    <form role="form" class="settings" ng-submit="vm.update()">
+      <div class="form-group">
+        <label for="settings__email">Email</label>
+        <input type="text" class="form-control" id="settings__email" ng-model="vm.profile.email" placeholder="ex. john@example.com" />
+      </div>
+
+
+      <div class="form-group">
+        <label for="settings__first_name">First Name</label>
+        <input type="text" class="form-control" id="settings__first_name" ng-model="vm.profile.first_name" placeholder="ex. john" />
+      </div>
+
+      <div class="form-group">
+        <label for="settings__last_name">Last Name</label>
+        <input type="text" class="form-control" id="settings__last_name" ng-model="vm.profile.last_name" placeholder="ex. walker" />
+      </div>
+
+      <div class="form-group">
+        <label for="settings__password">New Password</label>
+        <input type="password" class="form-control" id="settings__password" ng-model="vm.profile.password" placeholder="ex. notgoogleplus" />
+      </div>
+
+      <div class="form-group">
+        <label for="settings__confirm-password">Confirm Password</label>
+        <input type="password" class="form-control" id="settings__confirm-password" ng-model="vm.profile.confirm_password" placeholder="ex. notgoogleplus" />
+      </div>
+
+
+      <div class="form-group">
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </div>
+    </form>
+  </div>
+</div>
