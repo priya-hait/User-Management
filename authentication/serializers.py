@@ -1,5 +1,4 @@
 from django.contrib.auth import update_session_auth_hash
-
 from rest_framework import serializers
 
 from authentication.models import Account
@@ -15,7 +14,12 @@ class AccountSerializer(serializers.ModelSerializer):
                   'confirm_password',)
 
     def create(self, validated_data):
-        return Account.objects.create(**validated_data)
+
+        if validated_data.get('password') == validated_data.get('confirm_password'):
+            return Account.objects.create_user(**validated_data)
+        else:
+            raise serializers.ValidationError({'Password': ["Passwords don't match"]})
+
 
 
 class AccountUpdateSerializer(AccountSerializer):
@@ -42,7 +46,7 @@ class AccountUpdateSerializer(AccountSerializer):
             return instance
         else:
 
-            raise ValueError("Passwords don't match")
+            raise serializers.ValidationError({'Password': ["Passwords don't match"]})
 
 
 

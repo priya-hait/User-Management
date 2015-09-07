@@ -36,6 +36,19 @@
 
 
 
+      function displayError(errors)
+      {
+        for (var key in errors)
+        {
+            var msg = key + ":" + errors[key];
+            Snackbar.error(msg);
+            console.log(msg);
+        }
+
+      }
+
+
+
 
       /**
       * @name get
@@ -76,7 +89,8 @@
       * @desc Show error snackbar
       */
       function profileErrorFn(data, status, headers, config) {
-        Snackbar.error(data.error);
+        console.log("Profile updation failed");
+        displayError(data.data)
       }
       }
 
@@ -115,14 +129,11 @@
   */
   function registerErrorFn(data, status, headers, config, statusText) {
     console.error('Epic failure!');
-    Snackbar.error(data.statusText);
-    Snackbar.error(data.data);
-    console.log(data.data);
-    for key in data.data
-    {
-        console.log(key.value);
-    }
+    displayError(data.data);
+
+
   }
+
 }
 
     /**
@@ -157,8 +168,7 @@
   function loginErrorFn(data, status, headers, config) {
     console.error('Epic failure!');
     Snackbar.error('Error in login credentials');
-    Snackbar.error(data);
-    Snackbar.error(status);
+    displayError(data.data);
   }
 }
 

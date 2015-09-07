@@ -1,5 +1,5 @@
 import json
-from django.http import HttpResponse
+
 from rest_framework import permissions, viewsets
 from rest_framework.response import Response
 from rest_framework import status, views
@@ -33,33 +33,6 @@ class AccountViewSet(viewsets.ModelViewSet):
 
         return serializer_class
 
-    def create(self, request):
-        serializer = self.serializer_class(data=request.data)
-
-        if serializer.is_valid():
-            if serializer.validated_data.get('password') == serializer.validated_data.get('confirm_password'):
-                Account.objects.create_user(**serializer.validated_data)
-
-                return Response(serializer.validated_data, status=status.HTTP_201_CREATED)
-
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        # return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST);
-
-    # def update(self, request, *args, **kwargs):
-    #     partial = kwargs.pop('partial', False)
-    #     instance = self.get_object()
-    #     serializer = self.get_serializer(instance, data=request.data, partial=partial)
-    #     serializer.is_valid(raise_exception=True)
-    #     password = serializer.validated_data.get('password')
-    #     confirm_password = serializer.validated_data.get('confirm_password')
-    #     if password == confirm_password:
-    #         if password != None:
-    #             self.perform_update(serializer)
-    #             return Response(serializer.data)
-
-
-
-
 
 class LoginView(views.APIView):
     # def get(self, request):
@@ -70,6 +43,11 @@ class LoginView(views.APIView):
 
         email = data.get('email', None)
         password = data.get('password', None)
+
+        if len(Account.objects.filter(email=email)) == 0:
+            return Response({
+                'email': 'User does not exist'
+            }, status=status.HTTP_401_UNAUTHORIZED)
 
         account = authenticate(email=email, password=password)
 
@@ -82,12 +60,10 @@ class LoginView(views.APIView):
                 return Response(serialized.data)
             else:
                 return Response({
-                    'status': 'Unauthorized',
                     'message': 'This account has been disabled.'
                 }, status=status.HTTP_401_UNAUTHORIZED)
         else:
             return Response({
-                'status': 'Unauthorized',
                 'message': 'Username/password combination invalid.'
             }, status=status.HTTP_401_UNAUTHORIZED)
 

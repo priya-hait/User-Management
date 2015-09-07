@@ -17,13 +17,13 @@
       controllerAs: 'vm',
       templateUrl: '/static/templates/authentication/register.html'
     }).when('/login', {
-  controller: 'LoginController',
-  controllerAs: 'vm',
-  templateUrl: '/static/templates/authentication/login.html'
-}).when('/:id/settings', {
-  controller: 'ProfileSettingsController',
-  controllerAs: 'vm',
-  templateUrl: '/static/templates/authentication/settings.html'
-}).otherwise('/');
-  }
-})();
+      controller: 'LoginController',
+      controllerAs: 'vm',
+      templateUrl: '/static/templates/authentication/login.html'
+    }).when('/:id/settings', {
+      controller: 'ProfileSettingsController',
+      controllerAs: 'vm',
+      templateUrl: '/static/templates/authentication/settings.html'
+    }).otherwise('/');
+      }
+    })();
