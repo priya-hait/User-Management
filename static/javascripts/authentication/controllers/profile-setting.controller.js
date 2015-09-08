@@ -10,18 +10,30 @@
     .controller('ProfileSettingsController', ProfileSettingsController);
 
   ProfileSettingsController.$inject = [
-    '$location', '$routeParams', 'Authentication', 'Snackbar'
+    '$location', '$scope', '$routeParams', 'Authentication', 'Snackbar'
   ];
 
   /**
   * @namespace ProfileSettingsController
   */
-  function ProfileSettingsController($location, $routeParams, Authentication, Snackbar) {
+  function ProfileSettingsController($location, $scope, $routeParams, Authentication, Snackbar) {
     var vm = this;
 
     vm.update = update;
 
     activate();
+
+
+    function displayError(errors)
+      {
+        vm.serverErrors = [];
+        for (var field in errors)
+        {
+            var msg = field + ":" + errors[field];
+            vm.serverErrors.push(msg);
+        }
+
+      }
 
 
     /**
@@ -36,12 +48,12 @@
       // Redirect if not logged in
       if (!authenticatedAccount) {
         $location.url('/');
-        Snackbar.error('You are not authorized to view this page. 1');
+        Snackbar.error('You are not authorized to view this page.');
       } else {
         // Redirect if logged in, but not the owner of this profile.
         if (authenticatedAccount.id != id) {
           $location.url('/');
-          Snackbar.error('You are not authorized to view this page. 2');
+          Snackbar.error('You are not authorized to view this page.');
         }
       }
 
@@ -75,7 +87,37 @@
     * @memberOf user_management.profiles.controllers.ProfileSettingsController
     */
     function update() {
-      Authentication.update(vm.profile);
+
+    if ($scope.updateForm.$valid) {
+      // Submit as normal
+      Authentication.update(vm.profile).then(profileSuccessFn, profileErrorFn);
+
+    } else {
+      $scope.updateForm.submitted = true;
+    }
+
+
+      /**
+      * @name profileSuccessFn
+      * @desc Show success snackbar
+      */
+      function profileSuccessFn(data, status, headers, config) {
+
+
+        Snackbar.show('Your profile has been updated.');
+//        window.location = '/';
+      }
+
+
+      /**
+      * @name profileErrorFn
+      * @desc Show error snackbar
+      */
+      function profileErrorFn(data, status, headers, config) {
+        console.log("Profile updation failed");
+        displayError(data.data)
+      }
+
     }
   }
 })();

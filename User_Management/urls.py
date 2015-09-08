@@ -1,11 +1,11 @@
 from django.conf.urls import patterns, url, include
 
 from User_Management.views import IndexView
-from rest_framework_nested import routers
+from rest_framework import routers
 
 from authentication.views import AccountViewSet, LoginView, LogoutView
 
-router = routers.SimpleRouter()
+router = routers.DefaultRouter()
 router.register(r'accounts', AccountViewSet)
 
 urlpatterns = patterns(

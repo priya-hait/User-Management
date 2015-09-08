@@ -1,30 +1,96 @@
 <div class="col-md-4 col-md-offset-4">
   <div class="well" ng-show="vm.profile">
-    <form role="form" class="settings" ng-submit="vm.update()">
+    <form role="form" class="settings"  name="updateForm" ng-submit="vm.update()" novalidate>
+
+        <div class="server_errors" ng-show="vm.serverErrors">
+            <p><b>Errors:</b></p>
+              <ul>
+                <li ng-repeat="error in vm.serverErrors">
+                  <!--<span>{{error.name}}</span>-->
+                  <p>{{error}}</p>
+                </li>
+              </ul>
+
+        </div>
+
       <div class="form-group">
         <label for="settings__email">Email</label>
-        <input type="text" class="form-control" id="settings__email" ng-model="vm.profile.email" placeholder="ex. john@example.com" />
+        <input type="text" name="email" class="form-control" id="settings__email" ng-model="vm.profile.email" placeholder="ex. john@example.com"
+               ng-minlength=3 ng-maxlength=40 required/>
+              <div class="error-container" ng-show="updateForm.email.$invalid && (updateForm.submitted || updateForm.email.$dirty)">
+                <p class="error" ng-show="updateForm.email.$error.required">
+                       Your email is required.
+                </p>
+                <p class="error" ng-show="updateForm.email.$error.minlength">
+                        Your email is required to be at least 3 characters
+                </p>
+                <p class="error" ng-show="updateForm.email.$error.email">
+                       That is not a valid email. Please input a valid email.
+                </p>
+                <p class="error" ng-show="updateForm.email.$error.maxlength">
+                        Your email cannot be longer than 20 characters
+                </p>
+              </div>
       </div>
 
 
       <div class="form-group">
         <label for="settings__first_name">First Name</label>
-        <input type="text" class="form-control" id="settings__first_name" ng-model="vm.profile.first_name" placeholder="ex. john" />
+        <input type="text" name="first_name" class="form-control" id="settings__first_name" ng-model="vm.profile.first_name" placeholder="ex. john"
+                ng-maxlength=40 required/>
+                          <div class="error-container" ng-show="updateForm.first_name.$invalid && (updateForm.submitted || updateForm.first_name.$dirty)">
+                            <p class="error" ng-show="updateForm.first_name.$error.required">
+                                   Your first name is required.
+                            </p>
+                            </p>
+                            <p class="error" ng-show="updateForm.first_name.$error.maxlength">
+                                    Your first name cannot be longer than 40 characters
+                            </p>
+                          </div>
       </div>
 
       <div class="form-group">
         <label for="settings__last_name">Last Name</label>
-        <input type="text" class="form-control" id="settings__last_name" ng-model="vm.profile.last_name" placeholder="ex. walker" />
+        <input type="text" name="last_name" class="form-control" id="settings__last_name" ng-model="vm.profile.last_name" placeholder="ex. walker"
+                ng-maxlength=40 required/>
+                            <div class="error-container" ng-show="updateForm.last_name.$invalid && (updateForm.submitted || updateForm.last_name.$dirty)">
+                                <p class="error" ng-show="updateForm.last_name.$error.required">
+                                       Your last name is required.
+                                </p>
+                                <p class="error" ng-show="updateForm.last_name.$error.maxlength">
+                                        Your last name cannot be longer than 40 characters
+                                </p>
+                           </div>
       </div>
 
       <div class="form-group">
         <label for="settings__password">New Password</label>
-        <input type="password" class="form-control" id="settings__password" ng-model="vm.profile.password" placeholder="ex. notgoogleplus" />
+        <input type="password" name="password" class="form-control" id="settings__password" ng-model="vm.profile.password" placeholder="ex. notgoogleplus"
+                ng-minlength=3 ng-maxlength=40 />
+                            <div class="error-container" ng-show="updateForm.password.$invalid && (updateForm.submitted || updateForm.password.$dirty)">
+
+                                <p class="error" ng-show="updateForm.password.$error.minlength">
+                                        Password is required to be at least 3 characters
+                                </p>
+                                <p class="error" ng-show="updateForm.password.$error.maxlength">
+                                        Password cannot be longer than 40 characters
+                                </p>
+                           </div>
       </div>
 
       <div class="form-group">
         <label for="settings__confirm-password">Confirm Password</label>
-        <input type="password" class="form-control" id="settings__confirm-password" ng-model="vm.profile.confirm_password" placeholder="ex. notgoogleplus" />
+        <input type="password" name="confirm_password" class="form-control" id="settings__confirm-password" ng-model="vm.profile.confirm_password" placeholder="ex. notgoogleplus"
+                ng-minlength=3 ng-maxlength=40 />
+                            <div class="error-container" ng-show="updateForm.confirm_password.$invalid && (updateForm.submitted || updateForm.confirm_password.$dirty)">
+
+                                <p class="error" ng-show="updateForm.confirm_password.$error.minlength">
+                                        This field is required to be at least 3 characters
+                                </p>
+                                <p class="error" ng-show="updateForm.confirm_password.$error.maxlength">
+                                        This field cannot be longer than 40 characters
+                                </p>
+                           </div>
       </div>
 
 

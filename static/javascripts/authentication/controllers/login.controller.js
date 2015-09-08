@@ -9,17 +9,31 @@
     .module('user_management.authentication.controllers')
     .controller('LoginController', LoginController);
 
-  LoginController.$inject = ['$location', 'Authentication'];
+  LoginController.$inject = ['$location', '$scope', 'Authentication'];
 
   /**
   * @namespace LoginController
   */
-  function LoginController($location, Authentication) {
+  function LoginController($location, $scope, Authentication) {
     var vm = this;
 
     vm.login = login;
 
     activate();
+
+
+    function displayError(errors)
+      {
+        vm.serverErrors = [];
+        for (var field in errors)
+        {
+            var msg = field + ":" + errors[field];
+            vm.serverErrors.push(msg);
+
+        }
+
+      }
+
 
     /**
     * @name activate
@@ -39,7 +53,32 @@
     * @memberOf user_management.authentication.controllers.LoginController
     */
     function login() {
-      Authentication.login(vm.email, vm.password);
+
+    if ($scope.loginForm.$valid) {
+      // Submit as normal
+      Authentication.login(vm.email, vm.password).then(loginSuccessFn, loginErrorFn);
+
+    } else {
+      $scope.loginForm.submitted = true;
+    }
+
+  /**
+   * @name loginSuccessFn
+   * @desc Set the authenticated account and redirect to index
+   */
+  function loginSuccessFn(data, status, headers, config) {
+    Authentication.setAuthenticatedAccount(data.data);
+    window.location = '/';
+  }
+
+  /**
+   * @name loginErrorFn
+   * @desc Log "Epic failure!" to the console
+   */
+  function loginErrorFn(data, status, headers, config) {
+    console.error('Epic failure!');
+    displayError(data.data);
+  }
     }
   }
 })();

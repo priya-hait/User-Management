@@ -1,6 +1,5 @@
 django
 dj-static
 django-compressor
-drf-nested-routers
 static3
 wsgiref

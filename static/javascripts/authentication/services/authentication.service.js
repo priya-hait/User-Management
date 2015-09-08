@@ -42,6 +42,7 @@
         {
             var msg = key + ":" + errors[key];
             Snackbar.error(msg);
+
             console.log(msg);
         }
 
@@ -70,28 +71,7 @@
       * @memberOf user_management.authentication.services.Profile
       */
       function update(profile) {
-        return $http.put('/api/v1/accounts/' + profile.id + '/', profile).then(profileSuccessFn, profileErrorFn);
-
-      /**
-      * @name profileSuccessFn
-      * @desc Show success snackbar
-      */
-      function profileSuccessFn(data, status, headers, config) {
-
-
-        Snackbar.show('Your profile has been updated.');
-//        window.location = '/';
-      }
-
-
-      /**
-      * @name profileErrorFn
-      * @desc Show error snackbar
-      */
-      function profileErrorFn(data, status, headers, config) {
-        console.log("Profile updation failed");
-        displayError(data.data)
-      }
+        return $http.put('/api/v1/accounts/' + profile.id + '/', profile);
       }
 
     ////////////////////
@@ -112,27 +92,7 @@
         last_name: last_name,
         password: password,
         confirm_password: confirm_password
-      }).then(registerSuccessFn, registerErrorFn);
-
-  /**
-  * @name registerSuccessFn
-  * @desc Log the new user in
-  */
-  function registerSuccessFn(data, status, headers, config) {
-    Authentication.login(email, password);
-    Snackbar.show('You have been successfully registered');
-  }
-
-  /**
-  * @name registerErrorFn
-  * @desc Log "Epic failure!" to the console
-  */
-  function registerErrorFn(data, status, headers, config, statusText) {
-    console.error('Epic failure!');
-    displayError(data.data);
-
-
-  }
+      });
 
 }
 
@@ -148,28 +108,7 @@
     return $http.post('/api/v1/auth/login/', {
       email: email,
       password: password
-    }).then(loginSuccessFn, loginErrorFn);
-
-  /**
-   * @name loginSuccessFn
-   * @desc Set the authenticated account and redirect to index
-   */
-  function loginSuccessFn(data, status, headers, config) {
-    Authentication.setAuthenticatedAccount(data.data);
-    Snackbar.show('user logged in successfully');
-
-    window.location = '/';
-  }
-
-  /**
-   * @name loginErrorFn
-   * @desc Log "Epic failure!" to the console
-   */
-  function loginErrorFn(data, status, headers, config) {
-    console.error('Epic failure!');
-    Snackbar.error('Error in login credentials');
-    displayError(data.data);
-  }
+    });
 }
 
 

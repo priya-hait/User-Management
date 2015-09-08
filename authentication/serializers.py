@@ -1,5 +1,8 @@
 from django.contrib.auth import update_session_auth_hash
+
 from rest_framework import serializers
+
+from rest_framework.validators import UniqueValidator
 
 from authentication.models import Account
 
@@ -7,18 +10,20 @@ from authentication.models import Account
 class AccountSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, required=True)
     confirm_password = serializers.CharField(write_only=True, required=True)
+    email = serializers.EmailField(validators=[UniqueValidator(queryset=Account.objects.all(), message="This email id has already been registered. Please try another")], required=True, max_length=40)
 
     class Meta:
         model = Account
         fields = ('id', 'email', 'first_name', 'last_name', 'password',
                   'confirm_password',)
 
+
     def create(self, validated_data):
 
         if validated_data.get('password') == validated_data.get('confirm_password'):
             return Account.objects.create_user(**validated_data)
         else:
-            raise serializers.ValidationError({'Password': ["Passwords don't match"]})
+            raise serializers.ValidationError({'password': ["Passwords don't match"]})
 
 
 
@@ -46,7 +51,7 @@ class AccountUpdateSerializer(AccountSerializer):
             return instance
         else:
 
-            raise serializers.ValidationError({'Password': ["Passwords don't match"]})
+            raise serializers.ValidationError({'password': ["Passwords don't match"]})
 
 
 
