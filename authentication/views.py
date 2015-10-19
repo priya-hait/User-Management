@@ -1,10 +1,13 @@
 import json
+from django.core.exceptions import PermissionDenied
+from django.shortcuts import get_object_or_404
+from django.views.generic import TemplateView
 
 from rest_framework import permissions, viewsets
 from rest_framework.response import Response
 from rest_framework import status, views
 from django.contrib.auth import authenticate, login, logout
-
+from django.http.response import HttpResponseForbidden
 from authentication.models import Account
 from authentication.permissions import IsAccountOwner
 from authentication.serializers import AccountSerializer, AccountUpdateSerializer
@@ -37,7 +40,6 @@ class AccountViewSet(viewsets.ModelViewSet):
 class LoginView(views.APIView):
     # def get(self, request):
     #     return HttpResponse("hello");
-
     def post(self, request, format=None):
         data = json.loads(request.body)
 
@@ -45,9 +47,9 @@ class LoginView(views.APIView):
         password = data.get('password', None)
 
         if len(Account.objects.filter(email=email)) == 0:
-            return Response({
-                'email': 'User does not exist'
-            }, status=status.HTTP_401_UNAUTHORIZED)
+            return Response(dict({
+                u'email': u'User does not exist'
+            }), status=status.HTTP_401_UNAUTHORIZED)
 
         account = authenticate(email=email, password=password)
 
@@ -59,13 +61,13 @@ class LoginView(views.APIView):
 
                 return Response(serialized.data)
             else:
-                return Response({
-                    'message': 'This account has been disabled.'
-                }, status=status.HTTP_401_UNAUTHORIZED)
+                return Response(dict({
+                    u'message': u'This account has been disabled.'
+                }), status=status.HTTP_401_UNAUTHORIZED)
         else:
-            return Response({
-                'message': 'Username/password combination invalid.'
-            }, status=status.HTTP_401_UNAUTHORIZED)
+            return Response(dict({
+                u'message': u'Username/password combination invalid.'
+            }), status=status.HTTP_401_UNAUTHORIZED)
 
 
 class LogoutView(views.APIView):
@@ -75,3 +77,19 @@ class LogoutView(views.APIView):
         logout(request)
 
         return Response({}, status=status.HTTP_204_NO_CONTENT)
+
+
+class ProfileView(TemplateView):
+
+    template_name = "authentication/settings.html"
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(ProfileView, self).get_context_data(*args, **kwargs)
+        context['user_profile'] = get_object_or_404(Account, pk=kwargs['id'])
+        return context
+
+    def get(self, request, *args, **kwargs):
+        id = int(kwargs['id'])
+        if request.user.id != id:
+            raise PermissionDenied
+        return super(ProfileView, self).get(request, *args, **kwargs)

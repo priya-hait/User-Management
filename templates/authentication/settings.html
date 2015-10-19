@@ -1,0 +1,114 @@
+{% extends "index.html" %}
+{% load staticfiles %}
+
+{% block content %}
+<div class="col-md-4 col-md-offset-4" id="profileModule">
+  <div class="well" >
+    <form role="form" class="settings"  name="updateForm" id="updateForm" data-bind="submit: updateSubmit" novalidate>
+      <div class="server_errors control-group error" data-bind="visible: errors().non_field_errors().length > 0">
+              <ul data-bind="foreach: errors().non_field_errors">
+                <li>
+                  <p class ="error"><b  data-bind="text: $data"></b></p>
+                </li>
+              </ul>
+
+      </div>
+
+
+      <div class="form-group">
+        <label for="settings__email">Email</label>
+        <input type="text" name="email" class="form-control" id="settings__email" value="{{user_profile.email}}" data-bind="value: user_profile().email" placeholder="ex. john@example.com"
+               required/>
+      </div>
+
+      <div class="server_errors control-group error" data-bind="visible: errors().email().length > 0">
+              <ul data-bind="foreach: errors().email">
+                <li>
+                  <p class ="error"><b  data-bind="text: $data"></b></p>
+                </li>
+              </ul>
+
+      </div>
+
+
+      <div class="form-group">
+        <label for="settings__first_name">First Name</label>
+        <input type="text" name="first_name" class="form-control" id="settings__first_name" value="{{user_profile.first_name}}" data-bind="value: user_profile().first_name" placeholder="ex. john"
+                required/>
+
+      </div>
+
+      <div class="server_errors control-group error" data-bind="visible: errors().first_name().length > 0">
+              <ul data-bind="foreach: errors().first_name">
+                <li>
+                  <p class ="error"><b  data-bind="text: $data"></b></p>
+                </li>
+              </ul>
+
+      </div>
+
+      <div class="form-group">
+        <label for="settings__last_name">Last Name</label>
+        <input type="text" name="last_name" class="form-control" id="settings__last_name" value="{{user_profile.last_name}}" data-bind="value: user_profile().last_name" placeholder="ex. walker"
+                required/>
+
+      </div>
+
+      <div class="server_errors control-group error" data-bind="visible: errors().last_name().length > 0">
+              <ul data-bind="foreach: errors().last_name">
+                <li>
+                  <p class ="error"><b  data-bind="text: $data"></b></p>
+                </li>
+              </ul>
+
+      </div>
+
+      <div class="form-group">
+        <label for="settings__password">New Password</label>
+        <input type="password" name="password" class="form-control" id="settings__password" data-bind="value: user_profile().password" placeholder="ex. notgoogleplus"
+                />
+
+      </div>
+
+      <div class="server_errors control-group error" data-bind="visible: errors().password().length > 0">
+              <ul data-bind="foreach: errors().password">
+                <li>
+                  <p class ="error"><b  data-bind="text: $data"></b></p>
+                </li>
+              </ul>
+
+      </div>
+
+      <div class="form-group">
+        <label for="settings__confirm-password">Confirm Password</label>
+        <input type="password" name="confirm_password" class="form-control" id="settings__confirm-password" data-bind="value: user_profile().confirm_password" placeholder="ex. notgoogleplus"
+                />
+
+      </div>
+
+      <div class="server_errors control-group error" data-bind="visible: errors().confirm_password().length > 0">
+              <ul data-bind="foreach: errors().confirm_password">
+                <li>
+                  <p class ="error"><b  data-bind="text: $data"></b></p>
+                </li>
+              </ul>
+
+      </div>
+
+
+      <div class="form-group">
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </div>
+    </form>
+  </div>
+</div>
+<script>
+    var user_email = "{{user_profile.email}}";
+    var user_first_name = "{{user_profile.first_name}}";
+    var user_last_name = "{{user_profile.last_name}}";
+    var user_id = {{user_profile.id}};
+
+</script>
+<script type="text/javascript" src="{% static 'javascripts/profile-ViewModel.js' %}"></script>
+
+{% endblock %}

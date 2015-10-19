@@ -1,6 +1,6 @@
 /**
 * LoginController
-* @namespace user_management.authentication.controllers
+* @namespace User_Management.authentication.controllers
 */
 (function () {
   'use strict';

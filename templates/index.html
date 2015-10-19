@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html ng-app="user_management">
+<html>
 <head>
-  <title>User Managemment</title>
+  <title>User Management</title>
 
   <base href="/" />
 
@@ -9,14 +9,11 @@
 </head>
 
 <body>
-  {% include 'navbar.html' %}
-
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-xs-12 ng-view"></div>
-    </div>
-  </div>
 
   {% include 'javascripts.html' %}
+  {% include 'navbar.html' %}
+
+  {% block content%}
+  {% endblock %}
 </body>
 </html>

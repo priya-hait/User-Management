@@ -4,14 +4,12 @@
 # Node modules
 node_modules/
 
-# Bower components
-static/bower_components/
 
 # Uglified JavaScript
 dist/
 
 # Staticfiles
-staticfiles/
+static/
 
 *.jpg
 *.jpeg

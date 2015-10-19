@@ -1,0 +1,55 @@
+{% extends "index.html" %}
+{% load staticfiles %}
+
+{% block content %}
+<div class="row" id="loginModule">
+  <div class="col-md-4 col-md-offset-4">
+    <h1>Login</h1>
+
+      <div class="server_errors" data-bind="visible: errors().length > 0">
+              <p><b>Errors:</b></p>
+              <ul data-bind="foreach: errors">
+                <li>
+                  <p class ="error"><b  data-bind="text: $data"></b></p>
+                </li>
+              </ul>
+
+      </div>
+
+
+
+    <div class="well">
+      <form role="form"  name="loginForm" data-bind="submit: loginsubmit" novalidate>
+        <div class="form-group">
+          <label for="login__email">Email</label>
+          <input type="text" name="email" class="form-control" id="login__email" data-bind="value: email" placeholder="ex. john@example.com"
+                  required />
+
+        </div>
+
+        <div class="form-group">
+          <label for="login__password">Password</label>
+          <input type="password" name="password" class="form-control" id="login__password" data-bind="value: password" placeholder="ex. thisisnotgoogleplus"
+                  required />
+
+        </div>
+
+        <div class="form-group">
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<script>
+        var authenticated_user;
+        {% if user.is_authenticated %}
+            authenticated_user = true;
+            var authenticated_user_id = {{user.id}};
+        {% else %}
+            authenticated_user = false;
+        {% endif %}
+</script>
+<script type="text/javascript" src="{% static 'javascripts/login-ViewModel.js' %}"></script>
+
+{% endblock %}
